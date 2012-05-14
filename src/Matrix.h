@@ -23,6 +23,7 @@ namespace Box
         int mNumLines; int mNumColumns;
     };
 
+    /* Template definition has to be in the same file as its declaration to avoid linker errors */
     template <typename T> Matrix<T>::Matrix(const int numLines, const int numColumns)
     {
         std::cout << "Constructing a Matrix with " << numLines << " lines and " << numColumns << " columns" << std::endl;
