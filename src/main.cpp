@@ -2,17 +2,25 @@
 #include <iostream>
 
 #include "Matrix.h"
-#include "Tile.h"
+#include "Vector2.h"
+#include "Rectangle.h"
+#include "TileBase.h"
+
+using namespace Box;
+
+typedef Vector2<int> Vector2i;
+typedef Rectangle<int> Rectanglei;
 
 int main()
 {
 	std::cout << "Initiating main.." << std::endl;
 
-    Box::Matrix<Box::Tile> m(10,10);
+    Matrix< TileBase<int> > m(10,10);
     
-    Box::Tile *tile1 = new Box::Tile("defaultTile");
-	std::cout << "Tile inserted at 2,2: " << tile1 << std::endl;
+    TileBase<int> *tile1 = new TileBase<int>(Rectanglei(Vector2i(1,6), Vector2i(4,4)));
+
     m.insertAt(*tile1, 2, 2);
+	std::cout << "Tile inserted at 2,2: " << tile1 << std::endl;
     
     delete(tile1);
 
@@ -20,8 +28,9 @@ int main()
 	{
 		for (int j = 0; j < 10; j++)
 		{
-            std::cout << "Element at " << i << "," << j << " : " << &m.elementAt(i,j) << " - " << m.elementAt(i,j).typeName() << std::endl;
+			std::cout << m(i,j).position().x << "," << m(i,j).position().y << " ";
 		}
+		std::cout << std::endl;
 	}
 
 	std::cout << "Terminating.." << std::endl;
