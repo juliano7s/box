@@ -72,13 +72,13 @@ void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
     }
 }
 
-int initSDL()
+int initSDL(SDL_Surface *surface)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 		return false;
 
-	if (SDL_SetVideoMode(640, 480, 32,
-				SDL_HWSURFACE | SDL_OPENGL) == 0)
+	if ((surface = SDL_SetVideoMode(640, 480, 32,
+				SDL_HWSURFACE | SDL_OPENGL)) == 0)
 		return false;
 
 	SDL_WM_SetCaption("Box Game Engine", 0);

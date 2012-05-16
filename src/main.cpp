@@ -21,7 +21,9 @@ int main(int argc, char** argv)
 {
 	std::cout << "Initiating main.." << std::endl;
 
-	if (!SDLUtils::initSDL()) return -1;
+    SDL_Surface *surfaceDisplay = NULL;
+
+	if (!SDLUtils::initSDL(surfaceDisplay)) return -1;
 
 	ImageSdl img1("resources/Compass.png");
 	ImageSdl img2("resources/snail.bmp");
@@ -53,7 +55,11 @@ int main(int argc, char** argv)
 		std::cout << std::endl;
 	}
 
-	std::cout << "Terminating.." << std::endl;
-    
+    SDL_Quit();
+    std::cout << "Terminating.." << std::endl;
+
+    int value = 0;
+    std::cin >> value;
+
     return 0;
 }
