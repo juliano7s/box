@@ -6,6 +6,7 @@
 
 #include "Vector2.h"
 #include "Rectangle.h"
+#include "ImageBase.h"
 
 namespace Box
 {
@@ -15,13 +16,16 @@ class TileBase
 {
 public:
 	TileBase();
-	TileBase(const Rectangle<T> &rectangle);
+	TileBase(const Rectangle<T> &rectangle, std::string imageFile);
+	TileBase(const Rectangle<T> &rectangle, ImageBase *image) : mpImage(image) { };
+	~TileBase() { /* responsible for deleting the mpImage pointer - it owns the pointer */ };
 
 public:
 	Vector2<T> position() const;
 
 protected:
 	Rectangle<T> mRectangle;
+	ImageBase *mpImage;
 };
 
 template<typename T>
@@ -31,9 +35,10 @@ TileBase<T>::TileBase()
 }
 
 template<typename T>
-TileBase<T>::TileBase(const Rectangle<T> &rectangle)
+TileBase<T>::TileBase(const Rectangle<T> &rectangle, std::string imageFile)
+	: mRectangle(rectangle)
 {
-	mRectangle = rectangle;
+	//Use a factory to create the mpImage member with the imageFile parameter
 }
 
 template <typename T>

@@ -10,7 +10,7 @@ struct Vector2
 {
 	T x, y;
 
-	Vector2() { /* empty */ };
+	Vector2() : x(0), y(0) { /* empty */ };
 
 	Vector2(const T& x, const T& y)
 	{
