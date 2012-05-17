@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdexcept>
 
+#include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
 
 #include "SDLUtils.h"
@@ -41,6 +42,10 @@ ImageSdl::ImageSdl(std::string fileName)
 	mPitch = mSurface.pitch;
 	mPixelWidth = mSurface.w;
 	mPixelHeight = mSurface.h;
+	mRedMask = mSurface.format->Rmask;
+	mGreenMask = mSurface.format->Gmask;
+	mBlueMask = mSurface.format->Bmask;
+	mAlphaMask = mSurface.format->Amask;
 	mIsLoaded = true;
 }
 

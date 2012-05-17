@@ -72,21 +72,25 @@ void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
     }
 }
 
-int initSDL(SDL_Surface *surface)
+SDL_Surface* initSDL()
 {
-	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
-		return false;
+	SDL_Surface *surface = NULL;
 
-	if ((surface = SDL_SetVideoMode(640, 480, 32,
-				SDL_HWSURFACE | SDL_OPENGL)) == 0)
-		return false;
+	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
+		return NULL;
+
+//	if ((surface = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_OPENGL)) == 0)
+//		return NULL;
+
+	if ((surface = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF)) == 0)
+		return NULL;
 
 	SDL_WM_SetCaption("Box Game Engine", 0);
 
 	/* OpenGL options */
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+//	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-	return true;
+	return surface;
 }
 
 void printSurfaceInfo(const SDL_Surface &surface)
@@ -117,14 +121,7 @@ SDL_Surface* loadImage(const char *file)
 	SDL_FreeSurface(surfTemp);
 
 	printSurfaceInfo(*surfTemp);
-	std::cout << std::endl;
-	std::cout << file << std::endl;
-	std::cout << " pitch = " << surfReturn->pitch << std::endl;
-	std::cout << " bpp = " << (int) surfReturn->format->BytesPerPixel << std::endl;
-	std::cout << " w x h = " << (int) surfReturn->w << " x " << surfReturn->h << std::endl;
-	std::cout << " RGBAmask = " << std::hex << surfReturn->format->Rmask << " " <<
-		surfReturn->format->Gmask << " " << surfReturn->format->Bmask << " " <<
-		surfReturn->format->Amask << std::endl;
+
 	SDL_LockSurface(surfReturn);
 	for (int i = 0; i < surfReturn->w; i++)
 	{
@@ -137,6 +134,21 @@ SDL_Surface* loadImage(const char *file)
 	std::cout << std::endl;
 
 	return surfReturn;
+}
+
+bool blitSurface(SDL_Surface* Surf_Dest, SDL_Surface* Surf_Src, int X, int Y) {
+    if(Surf_Dest == NULL || Surf_Src == NULL) {
+        return false;
+    }
+ 
+    SDL_Rect DestR;
+ 
+    DestR.x = X;
+    DestR.y = Y;
+ 
+    SDL_BlitSurface(Surf_Src, NULL, Surf_Dest, &DestR);
+ 
+    return true;
 }
 
 

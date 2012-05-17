@@ -18,16 +18,17 @@ public:
 	bool isLoaded() const { return mIsLoaded; }
 	int width() const { return mPixelWidth; }
 	int height() const { return mPixelHeight; }
-	int depth() const { return mBytesPerPixel; }
-	int pitch() const { return mPitch; }
+	unsigned char depth() const { return 8 * mBytesPerPixel; }
+	unsigned short pitch() const { return mPitch; }
 	void* pixels() const { return mPixels; }
 
 protected:
 	std::string mFileName;
 	void *mPixels;
 	int mPixelWidth, mPixelHeight;
-	int mBytesPerPixel;
-	int mPitch;
+	unsigned char mBytesPerPixel;
+	unsigned short mPitch;
+	unsigned long mRedMask, mGreenMask, mBlueMask, mAlphaMask;
 	bool mIsLoaded;
 };
 
