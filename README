@@ -1,0 +1,15 @@
+
+Box 2d Game Engine
+
+Project for the development of the Box 2d Game Engine.
+
+This engine is aimed at developing 2d platform games.
+It will provide a tile engine, basic physics system
+with some tweaks, sound suppport.
+
+Libraries used:
+SDL
+FreeImage
+OpenGL
+OpenAL
+(maybe a physics engine like Chipmunk Physics)
