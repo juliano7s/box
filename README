@@ -5,7 +5,7 @@ Project for the development of the Box 2d Game Engine.
 
 This engine is aimed at developing 2d platform games.
 It will provide a tile engine, basic physics system
-with some tweaks, sound suppport.
+with some tweaks, sound suppport, image loading, etc.
 
 Libraries used:
 SDL
