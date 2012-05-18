@@ -17,6 +17,7 @@ class TileBase
 public:
 	TileBase();
 	TileBase(const Rectangle<T> &rectangle, std::string imageFile);
+	TileBase(const Vector2<T> &position, const Vector2<T> &dimensions);
 	TileBase(const Rectangle<T> &rectangle, ImageBase *image) : mpImage(image) { };
 	~TileBase() { /* responsible for deleting the mpImage pointer - it owns the pointer */ };
 
@@ -32,6 +33,13 @@ template<typename T>
 TileBase<T>::TileBase()
 {
 	//empty
+}
+
+template <typename T>
+TileBase<T>::TileBase(const Vector2<T> &position, const Vector2<T> &dimensions)
+	: mRectangle(position, dimensions.x, dimensions.y)
+{
+	
 }
 
 template<typename T>
