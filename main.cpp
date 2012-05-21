@@ -8,7 +8,7 @@
 #include <Windows.h>
 #define SLEEP Sleep(3000)
 #else
-#define SLEEP sleep(3)
+#define SLEEP usleep(500000)
 #endif
 
 #include "SDL/SDL.h"
@@ -21,14 +21,12 @@
 #include "ImageSdl.h"
 #include "ImageFactory.h"
 #include "SDLUtils.h"
+#include "RendererSdl.h"
 
 using namespace Box;
 
-typedef Vector2<int> Vector2i;
-typedef Box::Rectangle<int> Rectanglei;
-typedef TileBase<int> Tile;
-
 ImageFactory imgFactory;
+RendererSdl renderer;
 
 int main(int argc, char** argv)
 {
@@ -37,10 +35,10 @@ int main(int argc, char** argv)
 	SDL_Surface *displaySurface = NULL;
 	if ((displaySurface = SDLUtils::initSDL()) == NULL) return -1;
 
+	renderer.surface(displaySurface);
+	ImageBase *img1 = imgFactory.acquire("resources/flash-logo.jpg");
 
-	ImageBase *img1 = imgFactory.acquire("resources/Compass.png");
-
-	Matrix<Tile> tileMatrix(30,20);
+	Matrix<Tilei> tileMatrix(30,20);
 	Vector2i tilePos(0,0);
 	for (int i = 0; i < 30*20; i++)
 	{
@@ -49,21 +47,19 @@ int main(int argc, char** argv)
 		//delete t
 	}
 
-	SDL_Surface *created = SDLUtils::createSurface(*img1);
-	SDLUtils::printSurfaceInfo(*created);
+	int x = 0, y = 0;
     while (true)
     {
-        SDLUtils::blitSurface(displaySurface, created, 0, 0);
+		renderer.renderImage(*img1, Vector2i(++x,++y));
         SDL_Flip(displaySurface);
         SLEEP;
-        break;
     }
 
 	std::cout << "Indexes: " << std::endl;
 	int currentLine = 0;
-    for (Matrix<Tile>::iterator it = tileMatrix.begin(), end = tileMatrix.end(); it != end; ++it)
+    for (Matrix<Tilei>::iterator it = tileMatrix.begin(), end = tileMatrix.end(); it != end; ++it)
     {
-		std::pair<int, int> elemPos = Matrix<Tile>::elementPosition(it);
+		std::pair<int, int> elemPos = Matrix<Tilei>::elementPosition(it);
 
 		if (elemPos.first != currentLine)
 		{
@@ -87,9 +83,6 @@ int main(int argc, char** argv)
 		std::cout << std::endl;
 	}
 
-    
-
-    SDL_FreeSurface(created);
     SDL_FreeSurface(displaySurface);
 	SDL_Quit();
 	std::cout << "Terminating.." << std::endl;

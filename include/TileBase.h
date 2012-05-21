@@ -38,6 +38,8 @@ protected:
 	TTileId mId; //Id that defines a block inside mpImage
 };
 
+typedef TileBase<int> Tilei;
+
 template<typename T>
 TileBase<T>::TileBase()
 {

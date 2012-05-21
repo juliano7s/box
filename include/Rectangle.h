@@ -30,6 +30,8 @@ private:
 	Vector2<T> mFirstPoint, mLastPoint;
 };
 
+typedef Rectangle<int> Rectanglei;
+
 /* Constructors */
 
 template <typename T>

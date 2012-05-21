@@ -3,6 +3,7 @@
 #define IMAGEBASE_H
 
 #include <string>
+#include <stdint.h>
 
 namespace Box
 {
@@ -18,21 +19,21 @@ public:
 	bool isLoaded() const { return mIsLoaded; }
 	int width() const { return mPixelWidth; }
 	int height() const { return mPixelHeight; }
-	unsigned char depth() const { return 8 * mBytesPerPixel; }
-	unsigned short pitch() const { return mPitch; }
+	uint8_t depth() const { return 8 * mBytesPerPixel; }
+	uint16_t pitch() const { return mPitch; }
 	void* pixels() const { return mPixels; }
-	unsigned long redMask() const { return mRedMask; }
-	unsigned long greenMask() const { return mGreenMask; }
-	unsigned long blueMask() const { return mBlueMask; }
-	unsigned long alphaMask() const { return mAlphaMask; }
+	uint32_t redMask() const { return mRedMask; }
+	uint32_t greenMask() const { return mGreenMask; }
+	uint32_t blueMask() const { return mBlueMask; }
+	uint32_t alphaMask() const { return mAlphaMask; }
 
 protected:
 	std::string mFileName;
 	void *mPixels;
 	int mPixelWidth, mPixelHeight;
-	unsigned char mBytesPerPixel;
-	unsigned short mPitch;
-	unsigned long mRedMask, mGreenMask, mBlueMask, mAlphaMask;
+	uint8_t mBytesPerPixel;
+	uint16_t mPitch;
+	uint32_t mRedMask, mGreenMask, mBlueMask, mAlphaMask;
 	bool mIsLoaded;
 };
 

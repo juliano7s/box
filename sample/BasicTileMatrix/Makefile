@@ -1,9 +1,13 @@
 
+EXECUTABLE = BasicTileMatrix
+
 CC = g++
 CFLAGS = -I../../include/
 LDFLAGS = -lSDL -lSDL_image
 OBJECTS = ../../obj/*.o
 
-all :
-	$(CC) *.cpp $(CFLAGS) $(OBJECTS) $(LDFLAGS)
+$(EXECUTABLE) :
+	$(CC) *.cpp -o $(EXECUTABLE) $(CFLAGS) $(OBJECTS) $(LDFLAGS)
 
+clean :
+	rm $(EXECUTABLE)

@@ -17,15 +17,14 @@
 #include "TileBase.h"
 #include "ImageFactory.h"
 #include "SDLUtils.h"
+#include "RendererSdl.h"
 
 using namespace Box;
-
-typedef Vector2<int> Vector2i;
-typedef TileBase<int> Tile;
 
 #define TILE_SIDE 40
 
 ImageFactory imgFactory;
+RendererSdl renderer;
 
 int main(int argc, char** argv)
 {
@@ -37,16 +36,17 @@ int main(int argc, char** argv)
 		std::cerr << "Error initiating SDL, aborting.." << std::endl;
 		return -1;
 	}
+	renderer.surface(displaySurface);
 
 	ImageBase *img1 = imgFactory.acquire("Compass.png");
 
-	Matrix<Tile> tileMatrix(30,20);
+	Matrix<Tilei> tileMatrix(30,20);
 	Vector2i tilePos(0,0);
 	for (int i = 0; i < 30; i++)
 	{
 		for (int j = 0; j < 20; j++)
 		{
-			Tile *t = new Tile(tilePos, Vector2i(TILE_SIDE,TILE_SIDE), img1);
+			Tilei *t = new Tilei(tilePos, Vector2i(TILE_SIDE,TILE_SIDE), img1);
 			tileMatrix(i,j) = *t;
 			delete t;
 			tilePos.y += TILE_SIDE;
@@ -57,9 +57,9 @@ int main(int argc, char** argv)
 
     while (true)
     {
-		for (Matrix<Tile>::iterator it = tileMatrix.begin(), end = tileMatrix.end(); it != end; ++it)
+		for (Matrix<Tilei>::iterator it = tileMatrix.begin(), end = tileMatrix.end(); it != end; ++it)
 		{
-			SDLUtils::drawTileOnSurface(*it, displaySurface);
+			renderer.renderTile(*it);
 		}
         SDL_Flip(displaySurface);
         SLEEP;

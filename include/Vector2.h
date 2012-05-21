@@ -19,6 +19,8 @@ struct Vector2
 	}
 };
 
+typedef Vector2<int> Vector2i;
+
 } //end of namespace
 
 #endif //VECTOR2_H

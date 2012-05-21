@@ -14,6 +14,9 @@
 #ifndef ANIMATION_H
 #define ANIMATION_H
 
+#include "ImageBase.h"
+#include "Vector2.h"
+
 namespace Box
 {
 
@@ -23,7 +26,7 @@ class Animation
 public:
 	typedef enum
 	{
-		ANIMATION_NONE = 0      // Follows the direction set on the animation object
+		ANIMATION_NONE = 0,     // Follows the direction set on the animation object
 		ANIMATION_FORWARD_ONLY, // Animate one time from the first frame to the last
 		ANIMATION_LOOPING,      // Loops through the frames in a circular way (1 2 3 4 5 -> 1 2 3 4 5)
 		ANIMATION_PENDULUM,     // Loops through the frames back and forth (1 2 3 4 5 4 3 2 1)
@@ -48,7 +51,8 @@ private:
 	int mCurrentFrameIndex;
 	int mNumFrames;
 	float mSpeed;
-	int mDirection;
+	TAnimationDirectionEnum mDirection;
+	TAnimationEnum mType;
 };
 
 } //end of namespace
