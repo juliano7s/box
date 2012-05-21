@@ -1,9 +1,9 @@
+include ../../default.mk
 
 EXECUTABLE = BasicTileMatrix
 
 CC = g++
 CFLAGS = -I../../include/
-LDFLAGS = -lSDL -lSDL_image
 OBJECTS = ../../obj/*.o
 
 $(EXECUTABLE) :

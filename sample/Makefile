@@ -1,3 +1,4 @@
+include ../default.mk
 
 SUBDIRS = ./BasicTileMatrix
 

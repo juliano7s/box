@@ -1,5 +1,5 @@
+include default.mk
 
-UNAME = $(shell uname)
 EXECUTABLE = box
 
 TOPDIR = $(shell pwd)
@@ -11,13 +11,6 @@ SAMPLEDIR = $(TOPDIR)/sample
 CC = g++
 CPPFLAGS=-Wall -Werror -Wno-format
 CPPFLAGS += -I$(INCLUDEDIR)
-
-ifeq ($(UNAME), Linux)
-LDFLAGS = -L/usr/local/lib -lSDL -lSDL_image
-endif
-ifeq ($(UNAME), Darwin)
-LDFLAGS = `sdl-config --cflags --libs` -lSDL_image
-endif
 
 OBJS = $(wildcard $(OBJDIR)/*.o)
 
