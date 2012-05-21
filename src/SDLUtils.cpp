@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+#include "TileBase.h"
+
 namespace Box
 {
 	namespace SDLUtils
@@ -39,7 +41,7 @@ Uint32 getPixel(SDL_Surface *surface, int x, int y)
     }
 }
 
-void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
+void putPixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 {
     int bpp = surface->format->BytesPerPixel;
     /* Here p is the address to the pixel we want to set */
@@ -105,7 +107,7 @@ void printSurfaceInfo(const SDL_Surface &surface)
 	std::cout << std::dec;
 }
 
-SDL_Surface* loadImage(const char *file)
+SDL_Surface* load(const char *file)
 {
 	SDL_Surface *surfTemp = NULL;
 	SDL_Surface *surfReturn = NULL;
@@ -136,7 +138,21 @@ SDL_Surface* loadImage(const char *file)
 	return surfReturn;
 }
 
-bool blitSurface(SDL_Surface* Surf_Dest, SDL_Surface* Surf_Src, int X, int Y) {
+SDL_Surface* createSurface(const ImageBase &image)
+{
+	/* SDL_CreateRGBSurfaceFrom to create a surface from void *pixelsi
+	 * SDL_Surface *SDL_CreateRGBSurfaceFrom(void *pixels, int width, int height,
+     int depth, int pitch, Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask); */
+	SDL_Surface *created = NULL;
+	created = SDL_CreateRGBSurfaceFrom(image.pixels(), image.width(), image.height(),
+        image.depth(), image.pitch(), image.redMask(), image.greenMask(),
+		image.blueMask(), image.alphaMask());
+
+	return created;
+}
+
+bool blitSurface(SDL_Surface* Surf_Dest, SDL_Surface* Surf_Src, int X, int Y)
+{
     if(Surf_Dest == NULL || Surf_Src == NULL) {
         return false;
     }
@@ -149,6 +165,13 @@ bool blitSurface(SDL_Surface* Surf_Dest, SDL_Surface* Surf_Src, int X, int Y) {
     SDL_BlitSurface(Surf_Src, NULL, Surf_Dest, &DestR);
  
     return true;
+}
+
+void drawTileOnSurface(const TileBase<int> &tile, SDL_Surface *surface)
+{
+	SDL_Surface *created = SDLUtils::createSurface(*tile.image());
+	blitSurface(surface, created, tile.position().x, tile.position().y);
+	SDL_FreeSurface(created);
 }
 
 

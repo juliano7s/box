@@ -15,10 +15,10 @@ namespace Box
 ImageSdl::ImageSdl(std::string fileName)
 	: ImageBase(fileName)
 {
-	this->loadImage();
+	this->load();
 }
 
-/* virtual */ void ImageSdl::loadImage()
+/* virtual */ void ImageSdl::load()
 {
 	SDL_Surface *surfTemp = NULL;
 

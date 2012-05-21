@@ -4,7 +4,7 @@
 namespace Box
 {
 
-/* pure virtual */ void ImageBase::loadImage() { }
+/* pure virtual */ void ImageBase::load() { }
 
 
 } //end of namespace
