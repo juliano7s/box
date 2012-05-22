@@ -8,6 +8,7 @@
 #include "SDL/SDL_image.h"
 
 #include "SDLUtils.h"
+#include "RendererBase.h"
 
 namespace Box
 {
@@ -18,7 +19,13 @@ ImageSdl::ImageSdl(std::string fileName)
 	this->load();
 }
 
-/* virtual */ void ImageSdl::load()
+ImageSdl::ImageSdl(std::string fileName, RendererBase &renderer)
+	: ImageBase(fileName, renderer)
+{
+	this->load();
+}
+
+void ImageSdl::load()
 {
 	SDL_Surface *surfTemp = NULL;
 
@@ -47,6 +54,18 @@ ImageSdl::ImageSdl(std::string fileName)
 	mBlueMask = mSurface.format->Bmask;
 	mAlphaMask = mSurface.format->Amask;
 	mIsLoaded = true;
+}
+
+void ImageSdl::draw(const Vector2<int> &position)
+{
+	if (mRenderer != NULL)
+		mRenderer->renderImage(*this, position, NULL);
+}
+
+void ImageSdl::draw(const Vector2<int> &positionAtScreen, Rectangle<int> *imageRegion)
+{
+	if (mRenderer != NULL)
+		mRenderer->renderImage(*this, positionAtScreen, imageRegion);
 }
 
 } //end of namespace

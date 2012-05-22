@@ -151,7 +151,7 @@ SDL_Surface* createSurface(const ImageBase &image)
 	return created;
 }
 
-bool blitSurface(SDL_Surface* Surf_Dest, SDL_Surface* Surf_Src, int X, int Y)
+bool blitSurface(SDL_Surface* Surf_Dest, SDL_Surface* Surf_Src, Rectangle<int> *imageRegion, const Vector2<int> &position)
 {
     if(Surf_Dest == NULL || Surf_Src == NULL) {
         return false;
@@ -159,10 +159,22 @@ bool blitSurface(SDL_Surface* Surf_Dest, SDL_Surface* Surf_Src, int X, int Y)
  
     SDL_Rect DestR;
  
-    DestR.x = X;
-    DestR.y = Y;
- 
-    SDL_BlitSurface(Surf_Src, NULL, Surf_Dest, &DestR);
+    DestR.x = position.x;
+    DestR.y = position.y;
+
+	if (imageRegion != NULL)
+	{
+		SDL_Rect RegionR;
+		RegionR.x = imageRegion->position().x;
+		RegionR.y = imageRegion->position().y;
+		RegionR.w = imageRegion->width();
+		RegionR.h = imageRegion->height();
+
+		SDL_BlitSurface(Surf_Src, &RegionR, Surf_Dest, &DestR);
+	} else
+	{
+		SDL_BlitSurface(Surf_Src, NULL, Surf_Dest, &DestR);
+	}
  
     return true;
 }
@@ -170,7 +182,7 @@ bool blitSurface(SDL_Surface* Surf_Dest, SDL_Surface* Surf_Src, int X, int Y)
 void drawTileOnSurface(const TileBase<int> &tile, SDL_Surface *surface)
 {
 	SDL_Surface *created = SDLUtils::createSurface(*tile.image());
-	blitSurface(surface, created, tile.position().x, tile.position().y);
+//	blitSurface(surface, created, NULL, tile.position());
 	SDL_FreeSurface(created);
 }
 

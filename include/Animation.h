@@ -39,20 +39,29 @@ public:
 	} TAnimationDirectionEnum;
 
 	Animation();
-	Animation(ImageBase *framesImage);
+	Animation(const Vector2<int> &position, ImageBase *framesImage, Vector2<int> frameSize, int numFrames);
 
+	/**
+	 * \brief Goes to the next frame based on the animation type mType
+	 */
 	void nextFrame();
+
+	/**
+	 * \brief Draws current frame and goes to the next
+	 */
+	void animate();
 	TAnimationDirectionEnum direction() const;
 	void direction(TAnimationDirectionEnum direction);
 
 private:
 	ImageBase *mpImage;
 	Vector2<int> mFrameSize;
-	int mCurrentFrameIndex;
 	int mNumFrames;
-	float mSpeed;
+	int mCurrentFrameIndex;
 	TAnimationDirectionEnum mDirection;
 	TAnimationEnum mType;
+	float mSpeed;
+	Vector2<int> mPosition;
 };
 
 } //end of namespace

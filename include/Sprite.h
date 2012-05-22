@@ -7,7 +7,7 @@
  * - Build things for the fun of it.
  * - Don't add risk without a compelling and measurable benefit to the project.
  * - Don't invest in the future if your current project is in trouble.
- *
+ * 
  *                                                   - Source: C++ FAQ
  *
  * Sprite.h

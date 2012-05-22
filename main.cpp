@@ -25,8 +25,6 @@
 
 using namespace Box;
 
-ImageFactory imgFactory;
-RendererSdl renderer;
 
 int main(int argc, char** argv)
 {
@@ -35,7 +33,12 @@ int main(int argc, char** argv)
 	SDL_Surface *displaySurface = NULL;
 	if ((displaySurface = SDLUtils::initSDL()) == NULL) return -1;
 
+	RendererSdl renderer;
 	renderer.surface(displaySurface);
+
+	ImageFactory imgFactory;
+	imgFactory.renderer(renderer);
+
 	ImageBase *img1 = imgFactory.acquire("resources/flash-logo.jpg");
 
 	Matrix<Tilei> tileMatrix(30,20);
@@ -50,7 +53,8 @@ int main(int argc, char** argv)
 	int x = 0, y = 0;
     while (true)
     {
-		renderer.renderImage(*img1, Vector2i(++x,++y));
+//		renderer.renderImage(*img1, Vector2i(++x,++y));
+		img1->draw(Vector2i(x,y));
         SDL_Flip(displaySurface);
         SLEEP;
     }

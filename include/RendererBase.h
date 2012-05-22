@@ -34,7 +34,8 @@ public:
 	/**
 	 * \brief Renders the image or throws an exception if it can't.
 	 */
-	virtual void renderImage(const ImageBase &image, const Vector2i &position) = 0;
+	virtual void renderImage(const ImageBase &image, const Vector2i &position,
+			Rectangle<int> *imageRegion) = 0;
 	virtual void renderAnimation(const Animation &animation) = 0;
 	virtual void renderTile(const Tilei &tile) = 0;
 };

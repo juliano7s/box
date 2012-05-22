@@ -7,6 +7,8 @@
 
 #include "ImageBase.h"
 #include "TileBase.h"
+#include "Rectangle.h"
+#include "Vector2.h"
 
 namespace Box
 {
@@ -23,7 +25,7 @@ SDL_Surface* load(const char *file);
  * \brief creates a surface that needs to be freed later with SDL_FreeSurface
  */
 SDL_Surface* createSurface(const ImageBase &image);
-bool blitSurface(SDL_Surface* Surf_Dest, SDL_Surface* Surf_Src, int X, int Y);
+bool blitSurface(SDL_Surface* Surf_Dest, SDL_Surface* Surf_Src, Rectangle<int> *imageRegion, const Vector2<int> &position);
 void drawTileOnSurface(const TileBase<int> &tile, SDL_Surface *surface);
 
 }} //end of namespace
