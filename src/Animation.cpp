@@ -6,16 +6,38 @@
 namespace Box
 {
 
-Animation::Animation()
+Animation::Animation(std::string name, ImageBase *framesImage, const Vector2<int> &frameSize, int numFrames)
+	: mName(name), mpImage(framesImage), mNumFrames(numFrames), mCurrentFrameIndex(0), mPosition(0,0),
+	  mDirection(ANIMATION_DIRECTION_FORWARD), mType(ANIMATION_NONE), mFrames(numFrames)
 {
-	//empty
+	int numFramesPerRow = mpImage->width() / frameSize.x;
+
+	for (int i = 0; i < mNumFrames; i++)
+	{
+		int x = (i % numFramesPerRow) * frameSize.x;
+		int y = (i / numFramesPerRow) * frameSize.y;
+
+		mFrames[i].box.position(Vector2<int>(x,y)); 
+		mFrames[i].box.width(frameSize.x); 
+		mFrames[i].box.height(frameSize.y); 
+	}
 }
 
-Animation::Animation(const Vector2<int> &position, ImageBase *framesImage, Vector2<int> frameSize, int numFrames)
-	: mpImage(framesImage), mFrameSize(frameSize), mNumFrames(numFrames), mCurrentFrameIndex(0),
-	  mDirection(ANIMATION_DIRECTION_FORWARD), mType(ANIMATION_PENDULUM), mPosition(position) 
+Animation::Animation(std::string name, const Vector2<int> &position, ImageBase *framesImage, const Vector2<int> &frameSize, int numFrames)
+	: mName(name), mpImage(framesImage), mNumFrames(numFrames), mCurrentFrameIndex(0), mPosition(position),
+	  mDirection(ANIMATION_DIRECTION_FORWARD), mType(ANIMATION_NONE), mFrames(numFrames)
 {
-	//empty
+	int numFramesPerRow = mpImage->width() / frameSize.x;
+
+	for (int i = 0; i < mNumFrames; i++)
+	{
+		int x = (i % numFramesPerRow) * frameSize.x;
+		int y = (i / numFramesPerRow) * frameSize.y;
+
+		mFrames[i].box.position(Vector2<int>(x,y)); 
+		mFrames[i].box.width(frameSize.x); 
+		mFrames[i].box.height(frameSize.y); 
+	}
 }
 
 void Animation::nextFrame()
@@ -25,11 +47,16 @@ void Animation::nextFrame()
 	switch(mType)
 	{
 		case ANIMATION_FORWARD_ONLY:
+			if (mCurrentFrameIndex != lastFrame)
+				mCurrentFrameIndex++;
 
 		break;
 
 		case ANIMATION_LOOPING:
-
+			if (mCurrentFrameIndex == lastFrame)
+				mCurrentFrameIndex = 0; //Go to the first frame
+			else
+				mCurrentFrameIndex++;
 		break;
 
 		case ANIMATION_PENDULUM:
@@ -67,21 +94,24 @@ void Animation::nextFrame()
 
 void Animation::animate()
 {
-	int numFramesPerRow = mpImage->width() / mFrameSize.x;
-	int x = (mCurrentFrameIndex % numFramesPerRow) * mFrameSize.x;
-	int y = (mCurrentFrameIndex / numFramesPerRow) * mFrameSize.y;
-
-	Rectangle<int> frameRect(Vector2<int>(x,y), mFrameSize.x, mFrameSize.y);
-
-//	std::cout << "numFramesPerRow " << numFramesPerRow << std::endl;
-//	std::cout << "mNumFrames " << mNumFrames << std::endl;
-//	std::cout << "mCurrentFrameIndex " << mCurrentFrameIndex << std::endl;
-//	std::cout << "mpImage->width() " << mpImage->width() << std::endl;
-//	std::cout << "Drawing frame at " << x << "," << y << std::endl;
-//	std::cout << "Frame size " << mFrameSize.x << "," << mFrameSize.y << std::endl;
-
-	mpImage->draw(mPosition, &frameRect);
+	mpImage->draw(mPosition, &mFrames[mCurrentFrameIndex].box);
 	this->nextFrame();
+}
+
+void Animation::animate(const Vector2<int> &position)
+{
+	mpImage->draw(position, &mFrames[mCurrentFrameIndex].box);
+	this->nextFrame();
+}
+
+void Animation::addFrame(const Frame &frame)
+{
+	if (frame.id < 0 || frame.id > mNumFrames)
+	{
+		throw std::invalid_argument("Can't add frame to animation: frame id not in range");
+	}
+
+	mFrames[frame.id] = frame;
 }
 
 Animation::TAnimationDirectionEnum Animation::direction() const
@@ -92,6 +122,11 @@ Animation::TAnimationDirectionEnum Animation::direction() const
 void Animation::direction(TAnimationDirectionEnum direction)
 {
 	mDirection = direction;
+}
+
+void Animation::position(const Vector2<int> position)
+{
+	mPosition = position;
 }
 
 } //end of namespace

@@ -1,6 +1,6 @@
 include ../default.mk
 
-SUBDIRS = ./BasicTileMatrix ./BasicAnimation
+SUBDIRS = ./TileMatrixBasic ./AnimationBasic ./SpriteBasic
 
 all :
 	@for i in $(foreach d,$(SUBDIRS),$(d)); do \

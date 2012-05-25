@@ -1,5 +1,10 @@
-*.o
-*.swp
+obj/
 box
-sample/BasicTileMatrix/BasicTileMatrix
-sample/BasicAnimation/BasicAnimation
+sample/AnimationBasic/AnimationBasic
+sample/TileMatrixBasic/TileMatrixBasic
+sample/SpriteBasic/SpriteBasic
+tags
+*.o
+*.gdoc
+*.swp
+

@@ -5,6 +5,7 @@
 #include "Vector2.h"
 
 #include <stdexcept>
+#include <iostream>
 
 namespace Box
 {
@@ -16,6 +17,7 @@ public:
 	Rectangle();
 	Rectangle(const Vector2<T> &firstPoint, const Vector2<T> &lastPoint);
 	Rectangle(const Vector2<T> &position, T width, T height);
+	Rectangle(T x, T y, T width, T height);
 
 public:
 	/**
@@ -24,7 +26,9 @@ public:
 	Vector2<T> position() const;
 	void position(const Vector2<T> &newPosition);
 	T width() const;
+	void width(T width);
 	T height() const;
+	void height(T height);
 
 private:
 	Vector2<T> mFirstPoint, mLastPoint;
@@ -45,12 +49,12 @@ Rectangle<T>::Rectangle(const Vector2<T> &firstPoint, const Vector2<T> &lastPoin
 {
 	if (firstPoint.x == lastPoint.x)
 	{
-		throw std::invalid_argument("Points make a rectangle with 0 width");
+		std::cerr << "WARNING: 0 height rectangle" << std::endl;
 	}
 
 	if (firstPoint.y == lastPoint.y)
 	{
-		throw std::invalid_argument("Points make a rectangle with 0 height");
+		std::cerr << "WARNING: 0 width rectangle" << std::endl;
 	}
 
 	/* Rectangle origin is always the bottom left point (lowest x and lowest y) */
@@ -63,17 +67,36 @@ Rectangle<T>::Rectangle(const Vector2<T> &position, T width, T height)
 {
 	if (width <= 0)
 	{
-		throw std::invalid_argument("Can't create a 0 width rectangle");
+		std::cerr << "WARNING: 0 width rectangle" << std::endl;
 	}
 
-	if (width <= 0)
+	if (height <= 0)
 	{
-		throw std::invalid_argument("Can't create a 0 height rectangle");
+		std::cerr << "WARNING: 0 height rectangle" << std::endl;
 	}
 
 	mFirstPoint = position;
 	mLastPoint.x = position.x + width;
 	mLastPoint.y = position.y + height;
+}
+
+template <typename T>
+Rectangle<T>::Rectangle(T x, T y, T width, T height)
+{
+	if (width <= 0)
+	{
+		std::cerr << "WARNING: 0 width rectangle" << std::endl;
+	}
+
+	if (height <= 0)
+	{
+		std::cerr << "WARNING: 0 height rectangle" << std::endl;
+	}
+
+	mFirstPoint.x = x;
+	mFirstPoint.y = y;
+	mLastPoint.x = x + width;
+	mLastPoint.y = y + height;
 }
 
 /* Methods */
@@ -88,8 +111,8 @@ template <typename T>
 void Rectangle<T>::position(const Vector2<T> &newPosition)
 {
 	mFirstPoint = newPosition;
-	mLastPoint.x = mFirstPoint + this->width();
-	mLastPoint.y = mFirstPoint + this->height();
+	mLastPoint.x = mFirstPoint.x + this->width();
+	mLastPoint.y = mFirstPoint.y + this->height();
 }
 
 template <typename T>
@@ -99,9 +122,21 @@ T Rectangle<T>::width() const
 }
 
 template <typename T>
+void Rectangle<T>::width(T width)
+{
+	mLastPoint.x = mFirstPoint.x + width;
+}
+
+template <typename T>
 T Rectangle<T>::height() const
 {
 	return (mLastPoint.y - mFirstPoint.y);
+}
+
+template <typename T>
+void Rectangle<T>::height(T height)
+{
+	mLastPoint.y = mFirstPoint.y + height;
 }
 
 } //end of namespace
