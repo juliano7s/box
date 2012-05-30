@@ -7,10 +7,16 @@ namespace Box
 {
 
 Animation::Animation(std::string name, ImageBase *framesImage, const Vector2<int> &frameSize, int numFrames)
-	: mName(name), mpImage(framesImage), mNumFrames(numFrames), mCurrentFrameIndex(0), mPosition(0,0),
+	: mName(name), mpImage(framesImage), mNumFrames(numFrames), mCurrentFrameIndex(0),
+	  mCurrentFrameAppearences(0), mTimesToShowFrame(1), mPosition(0,0),
 	  mDirection(ANIMATION_DIRECTION_FORWARD), mType(ANIMATION_NONE), mFrames(numFrames)
 {
 	int numFramesPerRow = mpImage->width() / frameSize.x;
+
+	if (numFramesPerRow <= 0)
+	{
+		throw std::invalid_argument("Image width is smaller the frame width");
+	}
 
 	for (int i = 0; i < mNumFrames; i++)
 	{
@@ -24,10 +30,16 @@ Animation::Animation(std::string name, ImageBase *framesImage, const Vector2<int
 }
 
 Animation::Animation(std::string name, const Vector2<int> &position, ImageBase *framesImage, const Vector2<int> &frameSize, int numFrames)
-	: mName(name), mpImage(framesImage), mNumFrames(numFrames), mCurrentFrameIndex(0), mPosition(position),
+	: mName(name), mpImage(framesImage), mNumFrames(numFrames), mCurrentFrameIndex(0),
+      mCurrentFrameAppearences(0), mTimesToShowFrame(1), mPosition(position),
 	  mDirection(ANIMATION_DIRECTION_FORWARD), mType(ANIMATION_NONE), mFrames(numFrames)
 {
 	int numFramesPerRow = mpImage->width() / frameSize.x;
+
+	if (numFramesPerRow <= 0)
+	{
+		throw std::invalid_argument("Image width is smaller the frame width");
+	}
 
 	for (int i = 0; i < mNumFrames; i++)
 	{
@@ -95,13 +107,27 @@ void Animation::nextFrame()
 void Animation::animate()
 {
 	mpImage->draw(mPosition, &mFrames[mCurrentFrameIndex].box);
-	this->nextFrame();
+	if (mCurrentFrameAppearences == mTimesToShowFrame)
+	{
+		mCurrentFrameAppearences = 1;
+		this->nextFrame();
+	} else
+	{
+		mCurrentFrameAppearences++;
+	}
 }
 
 void Animation::animate(const Vector2<int> &position)
 {
 	mpImage->draw(position, &mFrames[mCurrentFrameIndex].box);
-	this->nextFrame();
+	if (mCurrentFrameAppearences == mTimesToShowFrame)
+	{
+		mCurrentFrameAppearences = 1;
+		this->nextFrame();
+	} else
+	{
+		mCurrentFrameAppearences++;
+	}
 }
 
 void Animation::addFrame(const Frame &frame)

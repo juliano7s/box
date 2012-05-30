@@ -50,7 +50,7 @@ class CarContainer
 {
 public:
 	void insertCar(Car &c) { mVehicles.push_back(&c); }
-	Car &get(int index) {
+	Car &get(int index) { 
 		return static_cast<Car&>(*mVehicles[index]);
 	}
 };

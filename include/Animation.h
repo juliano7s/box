@@ -80,12 +80,15 @@ public:
 	TAnimationDirectionEnum direction() const;
 	void direction(TAnimationDirectionEnum direction);
 	void position(Vector2<int> position);
+	void timesToShowFrame(int times) { mTimesToShowFrame = times; }
 
 private:
 	std::string mName;
 	ImageBase *mpImage;
 	int mNumFrames;
 	int mCurrentFrameIndex;
+	int mCurrentFrameAppearences;
+	int mTimesToShowFrame;
 	Vector2<int> mPosition;
 	TAnimationDirectionEnum mDirection;
 	TAnimationEnum mType;

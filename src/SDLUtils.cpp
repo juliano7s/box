@@ -156,9 +156,9 @@ bool blitSurface(SDL_Surface* Surf_Dest, SDL_Surface* Surf_Src, Rectangle<int> *
     if(Surf_Dest == NULL || Surf_Src == NULL) {
         return false;
     }
- 
+
     SDL_Rect DestR;
- 
+
     DestR.x = position.x;
     DestR.y = position.y;
 
@@ -175,7 +175,7 @@ bool blitSurface(SDL_Surface* Surf_Dest, SDL_Surface* Surf_Src, Rectangle<int> *
 	{
 		SDL_BlitSurface(Surf_Src, NULL, Surf_Dest, &DestR);
 	}
- 
+
     return true;
 }
 

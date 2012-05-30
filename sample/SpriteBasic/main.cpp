@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include <math.h>
+
 #ifdef _WIN32
 #include <Windows.h>
 #define SLEEP Sleep(5000)
@@ -23,6 +25,7 @@
 using namespace Box;
 
 #define TILE_SIDE 40
+#define PI 3.14159265
 
 
 int main(int argc, char** argv)
@@ -44,11 +47,34 @@ int main(int argc, char** argv)
 
 	Sprite starSprite(*img1, "star-data-sheet.spr");
 
+	int x = 0, y = 0;
+	int mx = 50, direction = 1;
+	int radius = 70;
+	float angle = 0;
     while (true)
     {
+		/* Clears the screen */
+//		SDL_FillRect(SDL_GetVideoSurface(), NULL, SDL_MapRGB(SDL_GetVideoSurface()->format, 0,0,0));
+		SDL_FillRect(displaySurface, NULL, SDL_MapRGB(displaySurface->format, 0,0,0));
+
+		x = mx + cos(angle * PI/180) * radius;
+		y = 150 + sin(angle * PI/180) * radius;
+
+		starSprite.move(Vector2<int>(x,y));
+		starSprite.show();
+
         SDL_Flip(displaySurface);
-		usleep(100000);
-		break;
+		usleep(20000);
+
+		angle = (angle < 360) ? angle + 10 : angle = 0;
+
+		if (mx <= 50)
+			direction = 1;
+
+		if (mx >= 450)
+			direction = -1;
+
+		mx += direction * 3;
     }
 
     SDL_FreeSurface(displaySurface);
